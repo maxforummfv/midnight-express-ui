@@ -114,8 +114,129 @@ const HOTSPOTS: Hotspot[] = [
   },
 ];
 
+/** Window opening in the carriage wall — scenery layer is clipped to this */
+const WINDOW = { x: 26, y: 14, w: 18, h: 22 };
+
+type TimeKey = "sang" | "chieu" | "dem";
+
+const TIMES: {
+  key: TimeKey;
+  label: string;
+  icon: typeof Sun;
+  scenery: string;
+  /** tint applied over the interior */
+  tint: string;
+  blend: "soft-light" | "multiply";
+  glow: string;
+}[] = [
+  {
+    key: "sang",
+    label: "Trời sáng",
+    icon: Sun,
+    scenery: landDay,
+    tint: "linear-gradient(180deg, oklch(0.92 0.06 90 / 0.28), oklch(0.75 0.05 80 / 0.12))",
+    blend: "soft-light",
+    glow: "oklch(0.95 0.06 95 / 0.5)",
+  },
+  {
+    key: "chieu",
+    label: "Chiều muộn",
+    icon: Sunset,
+    scenery: landDusk,
+    tint: "linear-gradient(180deg, oklch(0.72 0.16 55 / 0.34), oklch(0.45 0.1 40 / 0.28))",
+    blend: "soft-light",
+    glow: "oklch(0.8 0.16 55 / 0.55)",
+  },
+  {
+    key: "dem",
+    label: "Trời tối",
+    icon: Moon,
+    scenery: landNight,
+    tint: "linear-gradient(180deg, oklch(0.2 0.05 265 / 0.62), oklch(0.14 0.04 260 / 0.72))",
+    blend: "multiply",
+    glow: "oklch(0.7 0.1 250 / 0.4)",
+  },
+];
+
+function UnderCarriage() {
+  return (
+    <div className="relative h-16 overflow-hidden rounded-sm border border-border/70 bg-iron sm:h-20">
+      {/* motion streaks */}
+      {[18, 34, 52, 70, 86].map((top, i) => (
+        <span
+          key={top}
+          className="animate-streak absolute h-px w-24 bg-brass/40"
+          style={{
+            top: `${top}%`,
+            right: 0,
+            animationDelay: `${i * 0.22}s`,
+          }}
+          aria-hidden="true"
+        />
+      ))}
+
+      {/* wheels */}
+      <div className="absolute inset-x-4 top-1 flex justify-between sm:inset-x-10">
+        {[0, 1, 2, 3].map((i) => (
+          <svg
+            key={i}
+            viewBox="0 0 100 100"
+            className="animate-wheel size-11 sm:size-14"
+            style={{ animationDuration: `${0.6 + (i % 2) * 0.05}s` }}
+            aria-hidden="true"
+          >
+            <circle cx="50" cy="50" r="46" fill="oklch(0.18 0.01 250)" />
+            <circle
+              cx="50"
+              cy="50"
+              r="46"
+              fill="none"
+              stroke="oklch(0.62 0.09 70)"
+              strokeWidth="5"
+            />
+            <circle cx="50" cy="50" r="12" fill="oklch(0.6 0.1 72)" />
+            {Array.from({ length: 8 }).map((_, s) => (
+              <line
+                key={s}
+                x1="50"
+                y1="50"
+                x2={50 + 42 * Math.cos((s * Math.PI) / 4)}
+                y2={50 + 42 * Math.sin((s * Math.PI) / 4)}
+                stroke="oklch(0.5 0.07 68)"
+                strokeWidth="4"
+              />
+            ))}
+          </svg>
+        ))}
+      </div>
+
+      {/* rail */}
+      <div className="absolute inset-x-0 bottom-3 h-1.5 bg-brass/50" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 h-3 bg-wood/80" aria-hidden="true" />
+
+      {/* dust puffs blowing backwards */}
+      {[8, 22, 38, 55, 72, 88].map((left, i) => (
+        <span
+          key={left}
+          className="animate-dust absolute bottom-3 size-6 rounded-full"
+          style={{
+            left: `${left}%`,
+            background:
+              "radial-gradient(circle, oklch(0.8 0.03 80 / 0.55), transparent 70%)",
+            animationDelay: `${i * 0.38}s`,
+          }}
+          aria-hidden="true"
+        />
+      ))}
+    </div>
+  );
+}
+
 function CarriagePage() {
   const [active, setActive] = useState<Hotspot | null>(null);
+  const [timeKey, setTimeKey] = useState<TimeKey>("sang");
+  const time = TIMES.find((t) => t.key === timeKey)!;
+
 
   const detail = (
     <div className="space-y-4">
