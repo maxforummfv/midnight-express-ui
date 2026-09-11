@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { X, Hammer, ArrowUpCircle } from "lucide-react";
+import { X, Hammer, ArrowUpCircle, Sun, Sunset, Moon } from "lucide-react";
 import interior from "@/assets/carriage-interior.jpg";
+import landDay from "@/assets/land-day.jpg";
+import landDusk from "@/assets/land-dusk.jpg";
+import landNight from "@/assets/land-night.jpg";
 import { GameShell, ComingSoon } from "@/components/game/game-shell";
 import { Ornament } from "@/components/game/ornament";
+
 
 export const Route = createFileRoute("/toa-tau")({
   head: () => ({
