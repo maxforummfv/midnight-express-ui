@@ -436,8 +436,9 @@ function CarriagePage() {
                     />
                     <span
                       className={`panel-parchment pointer-events-none absolute bottom-1 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-sm px-1.5 py-0.5 text-[0.65rem] transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-xs ${
-                        on ? "opacity-100" : "opacity-0 md:opacity-0"
-                      } max-md:opacity-90`}
+                        on ? "opacity-100" : "opacity-0 max-md:opacity-85"
+                      }`}
+
                     >
                       {h.label}
                     </span>
