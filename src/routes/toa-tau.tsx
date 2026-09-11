@@ -342,14 +342,24 @@ function CarriagePage() {
 
           <div className="overflow-x-auto rounded-sm">
             <div className="relative w-[190%] overflow-hidden rounded-sm border border-border/70 sm:w-full">
-              {/* Layer 1 — scenery seen through the window */}
+              {/* Layer 1 — the carriage itself */}
+              <img
+                src={interior}
+                alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
+                width={1920}
+                height={1088}
+                className="block h-auto w-full"
+              />
+
+              {/* Layer 2 — scenery moving past the window */}
               <div
-                className="pointer-events-none absolute overflow-hidden"
+                className="pointer-events-none absolute overflow-hidden rounded-[2px]"
                 style={{
                   left: `${WINDOW.x}%`,
                   top: `${WINDOW.y}%`,
                   width: `${WINDOW.w}%`,
                   height: `${WINDOW.h}%`,
+                  boxShadow: "inset 0 0 18px oklch(0.1 0.02 250 / 0.75)",
                 }}
                 aria-hidden="true"
               >
@@ -359,19 +369,17 @@ function CarriagePage() {
                   loading="lazy"
                   width={1920}
                   height={640}
-                  className="animate-drift h-full w-[320%] max-w-none object-cover"
+                  className="animate-drift h-full w-[320%] max-w-none object-cover opacity-90"
+                />
+                <span
+                  className="absolute inset-0"
+                  style={{
+                    background:
+                      "linear-gradient(120deg, oklch(1 0 0 / 0.16), transparent 45%)",
+                  }}
                 />
               </div>
 
-              {/* Layer 2 — the carriage itself */}
-              <img
-                src={interior}
-                alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
-                width={1920}
-                height={1088}
-                className="relative block h-auto w-full"
-                style={{ mixBlendMode: "normal" }}
-              />
 
               {/* Layer 3 — time-of-day light */}
               <div
