@@ -370,6 +370,8 @@ function CarriagePage() {
                   width={1920}
                   height={640}
                   className="animate-drift h-full w-[320%] max-w-none object-cover opacity-90"
+                  style={{ animationDuration: "16s" }}
+
                 />
                 <span
                   className="absolute inset-0"
