@@ -39,83 +39,94 @@ type Hotspot = {
   h: number;
 };
 
+/**
+ * Coordinates are % of the *visible* interior crop (the illustration also
+ * contains the undercarriage, which is replaced by an animated layer).
+ */
 const HOTSPOTS: Hotspot[] = [
   {
     id: "cua-chinh",
     label: "Cửa chính",
     note: "Cánh cửa sắt gia cố, then đồng dày. Về sau bạn sẽ chốt cửa mỗi đêm và bước ra ngoài lúc rạng sáng.",
-    x: 1.5,
-    y: 8,
-    w: 14,
-    h: 60,
+    x: 2,
+    y: 6,
+    w: 13,
+    h: 87,
   },
   {
     id: "cua-so",
     label: "Cửa sổ",
     note: "Khung sắt chắn ngoài lớp kính mờ. Ban đêm, có thứ gì đó vẫn thường lướt qua sau tấm kính ấy.",
-    x: 26,
-    y: 14,
-    w: 18,
-    h: 22,
+    x: 28,
+    y: 29,
+    w: 13,
+    h: 27,
   },
   {
     id: "giuong",
     label: "Giường",
     note: "Chiếc giường gỗ với tấm chăn chắp vá. Đây sẽ là nơi bạn kết thúc một ngày và hồi phục thể lực.",
-    x: 17,
-    y: 40,
-    w: 24,
-    h: 24,
+    x: 18,
+    y: 55,
+    w: 23,
+    h: 27,
   },
   {
     id: "bep",
     label: "Bếp",
     note: "Lò gang cũ và mấy chiếc ấm đồng. Nấu nướng, đun nước và chế biến sẽ đến ở chặng sau.",
     x: 42,
-    y: 36,
-    w: 15,
-    h: 28,
+    y: 53,
+    w: 8,
+    h: 30,
   },
   {
     id: "ban",
     label: "Bàn",
     note: "Ngọn nến, lọ mực và quyển sổ da mở sẵn. Bàn làm việc dành cho chế tạo và ghi chép hành trình.",
-    x: 58,
-    y: 36,
-    w: 17,
-    h: 28,
+    x: 57,
+    y: 55,
+    w: 15,
+    h: 30,
   },
   {
     id: "kho",
     label: "Kho",
     note: "Kệ treo đầy lọ thủy tinh và những chiếc hòm khóa đồng. Nơi cất giữ lương thực và vật liệu.",
-    x: 71,
-    y: 12,
-    w: 12,
-    h: 50,
+    x: 70,
+    y: 25,
+    w: 8,
+    h: 32,
   },
   {
     id: "phong-tam",
     label: "Phòng tắm",
     note: "Một cánh cửa gỗ hẹp, khăn vải treo bên ngoài. Vệ sinh và giữ sức khỏe sẽ có ý nghĩa về sau.",
-    x: 84,
-    y: 10,
+    x: 79,
+    y: 22,
     w: 8,
-    h: 55,
+    h: 62,
   },
   {
     id: "nha-ve-sinh",
     label: "Nhà vệ sinh",
     note: "Buồng nhỏ cuối toa, sáng lờ mờ dưới ánh đèn dầu.",
-    x: 92,
-    y: 12,
-    w: 7,
-    h: 55,
+    x: 88,
+    y: 45,
+    w: 10,
+    h: 45,
   },
 ];
 
-/** Window opening in the carriage wall — scenery layer is clipped to this */
-const WINDOW = { x: 26, y: 14, w: 18, h: 22 };
+/** Window openings — the moving scenery layer is clipped to these */
+const WINDOWS = [
+  { x: 28.5, y: 30, w: 11.5, h: 25 },
+  { x: 57, y: 30, w: 13, h: 25 },
+];
+
+/** Visible share of the source illustration (interior only, no undercarriage) */
+const CROP = 0.72;
+
 
 type TimeKey = "sang" | "chieu" | "dem";
 
