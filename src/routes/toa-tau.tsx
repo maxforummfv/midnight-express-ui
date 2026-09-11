@@ -185,46 +185,52 @@ function CarriagePage() {
   return (
     <GameShell aside={<div className="hidden xl:block">{detail}</div>}>
       <div className="space-y-4">
-        <div className="panel-wood grain overflow-hidden rounded-sm p-1.5 sm:p-2.5">
-          <div className="relative overflow-hidden rounded-sm border border-border/70">
-            <img
-              src={interior}
-              alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
-              width={1920}
-              height={1088}
-              className="block h-auto w-full"
-            />
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(75% 60% at 50% 45%, transparent, oklch(0.1 0.02 250 / 0.55))",
-              }}
-              aria-hidden="true"
-            />
-            {HOTSPOTS.map((h) => (
-              <button
-                key={h.id}
-                type="button"
-                onClick={() => setActive(h)}
-                aria-label={h.label}
-                className={`hotspot-ring absolute rounded-sm transition-all duration-200 hover:bg-brass/15 focus-visible:bg-brass/20 focus-visible:outline-brass ${
-                  active?.id === h.id ? "bg-brass/20 candle-glow" : ""
-                }`}
+        <div className="panel-wood grain rounded-sm p-1.5 sm:p-2.5">
+          <div className="overflow-x-auto rounded-sm">
+            <div className="relative w-[190%] overflow-hidden rounded-sm border border-border/70 sm:w-full">
+              <img
+                src={interior}
+                alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
+                width={1920}
+                height={1088}
+                className="block h-auto w-full"
+              />
+              <div
+                className="pointer-events-none absolute inset-0"
                 style={{
-                  left: `${h.x}%`,
-                  top: `${h.y}%`,
-                  width: `${h.w}%`,
-                  height: `${h.h}%`,
+                  background:
+                    "radial-gradient(75% 60% at 50% 45%, transparent, oklch(0.1 0.02 250 / 0.55))",
                 }}
-              >
-                <span className="panel-parchment absolute bottom-1 left-1/2 -translate-x-1/2 rounded-sm px-1.5 py-0.5 text-[0.6rem] whitespace-nowrap sm:text-xs">
-                  {h.label}
-                </span>
-              </button>
-            ))}
+                aria-hidden="true"
+              />
+              {HOTSPOTS.map((h) => (
+                <button
+                  key={h.id}
+                  type="button"
+                  onClick={() => setActive(h)}
+                  aria-label={h.label}
+                  className={`hotspot-ring absolute rounded-sm transition-all duration-200 hover:bg-brass/15 focus-visible:bg-brass/20 focus-visible:outline-brass ${
+                    active?.id === h.id ? "bg-brass/20 candle-glow" : ""
+                  }`}
+                  style={{
+                    left: `${h.x}%`,
+                    top: `${h.y}%`,
+                    width: `${h.w}%`,
+                    height: `${h.h}%`,
+                  }}
+                >
+                  <span className="panel-parchment absolute bottom-1 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-sm px-1.5 py-0.5 text-[0.65rem] sm:text-xs">
+                    {h.label}
+                  </span>
+                </button>
+              ))}
+            </div>
           </div>
+          <p className="mt-2 text-center text-[0.7rem] text-muted-foreground sm:hidden">
+            Kéo ngang để xem cả toa · chạm vào từng vật
+          </p>
         </div>
+
 
         <Ornament className="xl:hidden" />
 
