@@ -311,14 +311,86 @@ function CarriagePage() {
     <GameShell aside={<div className="hidden xl:block">{detail}</div>}>
       <div className="space-y-4">
         <div className="panel-wood grain rounded-sm p-1.5 sm:p-2.5">
+          {/* Time of day */}
+          <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2 px-1 sm:mb-2.5">
+            <div className="flex gap-1.5">
+              {TIMES.map((t) => {
+                const Icon = t.icon;
+                const on = t.key === timeKey;
+                return (
+                  <button
+                    key={t.key}
+                    type="button"
+                    onClick={() => setTimeKey(t.key)}
+                    aria-pressed={on}
+                    className={`flex min-h-9 items-center gap-1.5 rounded-sm px-2.5 text-xs transition-all duration-200 sm:text-sm ${
+                      on
+                        ? "panel-parchment candle-glow"
+                        : "border border-border/70 text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className="size-4" aria-hidden="true" />
+                    {t.label}
+                  </button>
+                );
+              })}
+            </div>
+            <p className="hidden text-[0.7rem] text-muted-foreground sm:block">
+              Trỏ chuột vào từng vật trong toa để nó sáng lên
+            </p>
+          </div>
+
           <div className="overflow-x-auto rounded-sm">
             <div className="relative w-[190%] overflow-hidden rounded-sm border border-border/70 sm:w-full">
+              {/* Layer 1 — scenery seen through the window */}
+              <div
+                className="pointer-events-none absolute overflow-hidden"
+                style={{
+                  left: `${WINDOW.x}%`,
+                  top: `${WINDOW.y}%`,
+                  width: `${WINDOW.w}%`,
+                  height: `${WINDOW.h}%`,
+                }}
+                aria-hidden="true"
+              >
+                <img
+                  src={time.scenery}
+                  alt=""
+                  loading="lazy"
+                  width={1920}
+                  height={640}
+                  className="animate-drift h-full w-[320%] max-w-none object-cover"
+                />
+              </div>
+
+              {/* Layer 2 — the carriage itself */}
               <img
                 src={interior}
                 alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
                 width={1920}
                 height={1088}
-                className="block h-auto w-full"
+                className="relative block h-auto w-full"
+                style={{ mixBlendMode: "normal" }}
+              />
+
+              {/* Layer 3 — time-of-day light */}
+              <div
+                className="pointer-events-none absolute inset-0"
+                style={{ backgroundImage: time.tint, mixBlendMode: time.blend }}
+                aria-hidden="true"
+              />
+              {/* window light spilling in */}
+              <div
+                className="pointer-events-none absolute animate-flicker"
+                style={{
+                  left: `${WINDOW.x - 6}%`,
+                  top: `${WINDOW.y - 4}%`,
+                  width: `${WINDOW.w + 14}%`,
+                  height: `${WINDOW.h + 26}%`,
+                  background: `radial-gradient(50% 50% at 45% 40%, ${time.glow}, transparent 72%)`,
+                  mixBlendMode: "screen",
+                }}
+                aria-hidden="true"
               />
               <div
                 className="pointer-events-none absolute inset-0"
@@ -328,33 +400,53 @@ function CarriagePage() {
                 }}
                 aria-hidden="true"
               />
-              {HOTSPOTS.map((h) => (
-                <button
-                  key={h.id}
-                  type="button"
-                  onClick={() => setActive(h)}
-                  aria-label={h.label}
-                  className={`hotspot-ring absolute rounded-sm transition-all duration-200 hover:bg-brass/15 focus-visible:bg-brass/20 focus-visible:outline-brass ${
-                    active?.id === h.id ? "bg-brass/20 candle-glow" : ""
-                  }`}
-                  style={{
-                    left: `${h.x}%`,
-                    top: `${h.y}%`,
-                    width: `${h.w}%`,
-                    height: `${h.h}%`,
-                  }}
-                >
-                  <span className="panel-parchment absolute bottom-1 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-sm px-1.5 py-0.5 text-[0.65rem] sm:text-xs">
-                    {h.label}
-                  </span>
-                </button>
-              ))}
+
+              {/* Layer 4 — interactive objects, lit by soft glow (no dashed frames) */}
+              {HOTSPOTS.map((h) => {
+                const on = active?.id === h.id;
+                return (
+                  <button
+                    key={h.id}
+                    type="button"
+                    onClick={() => setActive(h)}
+                    aria-label={h.label}
+                    className="group absolute rounded-sm focus-visible:outline-none"
+                    style={{
+                      left: `${h.x}%`,
+                      top: `${h.y}%`,
+                      width: `${h.w}%`,
+                      height: `${h.h}%`,
+                    }}
+                  >
+                    <span
+                      className={`hotspot-glow pointer-events-none absolute -inset-[6%] rounded-sm blur-[6px] transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 ${
+                        on ? "opacity-100" : "opacity-0"
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <span
+                      className={`panel-parchment pointer-events-none absolute bottom-1 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-sm px-1.5 py-0.5 text-[0.65rem] transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-xs ${
+                        on ? "opacity-100" : "opacity-0 md:opacity-0"
+                      } max-md:opacity-90`}
+                    >
+                      {h.label}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
           </div>
+
+          {/* Under-carriage: wheels rolling + dust blowing back */}
+          <div className="mt-1.5 sm:mt-2.5">
+            <UnderCarriage />
+          </div>
+
           <p className="mt-2 text-center text-[0.7rem] text-muted-foreground sm:hidden">
             Kéo ngang để xem cả toa · chạm vào từng vật
           </p>
         </div>
+
 
 
         <Ornament className="xl:hidden" />
