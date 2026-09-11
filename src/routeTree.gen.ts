@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CaiDatRouteImport } from './routes/cai-dat'
+import { Route as KhamPhaRouteImport } from './routes/kham-pha'
+import { Route as NhanVatRouteImport } from './routes/nhan-vat'
+import { Route as NhatKyRouteImport } from './routes/nhat-ky'
+import { Route as ToaTauRouteImport } from './routes/toa-tau'
+import { Route as TuiDoRouteImport } from './routes/tui-do'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaiDatRoute = CaiDatRouteImport.update({
+  id: '/cai-dat',
+  path: '/cai-dat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KhamPhaRoute = KhamPhaRouteImport.update({
+  id: '/kham-pha',
+  path: '/kham-pha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NhanVatRoute = NhanVatRouteImport.update({
+  id: '/nhan-vat',
+  path: '/nhan-vat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NhatKyRoute = NhatKyRouteImport.update({
+  id: '/nhat-ky',
+  path: '/nhat-ky',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToaTauRoute = ToaTauRouteImport.update({
+  id: '/toa-tau',
+  path: '/toa-tau',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TuiDoRoute = TuiDoRouteImport.update({
+  id: '/tui-do',
+  path: '/tui-do',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cai-dat': typeof CaiDatRoute
+  '/kham-pha': typeof KhamPhaRoute
+  '/nhan-vat': typeof NhanVatRoute
+  '/nhat-ky': typeof NhatKyRoute
+  '/toa-tau': typeof ToaTauRoute
+  '/tui-do': typeof TuiDoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cai-dat': typeof CaiDatRoute
+  '/kham-pha': typeof KhamPhaRoute
+  '/nhan-vat': typeof NhanVatRoute
+  '/nhat-ky': typeof NhatKyRoute
+  '/toa-tau': typeof ToaTauRoute
+  '/tui-do': typeof TuiDoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cai-dat': typeof CaiDatRoute
+  '/kham-pha': typeof KhamPhaRoute
+  '/nhan-vat': typeof NhanVatRoute
+  '/nhat-ky': typeof NhatKyRoute
+  '/toa-tau': typeof ToaTauRoute
+  '/tui-do': typeof TuiDoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/cai-dat'
+    | '/kham-pha'
+    | '/nhan-vat'
+    | '/nhat-ky'
+    | '/toa-tau'
+    | '/tui-do'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/cai-dat'
+    | '/kham-pha'
+    | '/nhan-vat'
+    | '/nhat-ky'
+    | '/toa-tau'
+    | '/tui-do'
+  id:
+    | '__root__'
+    | '/'
+    | '/cai-dat'
+    | '/kham-pha'
+    | '/nhan-vat'
+    | '/nhat-ky'
+    | '/toa-tau'
+    | '/tui-do'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CaiDatRoute: typeof CaiDatRoute
+  KhamPhaRoute: typeof KhamPhaRoute
+  NhanVatRoute: typeof NhanVatRoute
+  NhatKyRoute: typeof NhatKyRoute
+  ToaTauRoute: typeof ToaTauRoute
+  TuiDoRoute: typeof TuiDoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cai-dat': {
+      id: '/cai-dat'
+      path: '/cai-dat'
+      fullPath: '/cai-dat'
+      preLoaderRoute: typeof CaiDatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kham-pha': {
+      id: '/kham-pha'
+      path: '/kham-pha'
+      fullPath: '/kham-pha'
+      preLoaderRoute: typeof KhamPhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nhan-vat': {
+      id: '/nhan-vat'
+      path: '/nhan-vat'
+      fullPath: '/nhan-vat'
+      preLoaderRoute: typeof NhanVatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nhat-ky': {
+      id: '/nhat-ky'
+      path: '/nhat-ky'
+      fullPath: '/nhat-ky'
+      preLoaderRoute: typeof NhatKyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/toa-tau': {
+      id: '/toa-tau'
+      path: '/toa-tau'
+      fullPath: '/toa-tau'
+      preLoaderRoute: typeof ToaTauRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tui-do': {
+      id: '/tui-do'
+      path: '/tui-do'
+      fullPath: '/tui-do'
+      preLoaderRoute: typeof TuiDoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CaiDatRoute: CaiDatRoute,
+  KhamPhaRoute: KhamPhaRoute,
+  NhanVatRoute: NhanVatRoute,
+  NhatKyRoute: NhatKyRoute,
+  ToaTauRoute: ToaTauRoute,
+  TuiDoRoute: TuiDoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
