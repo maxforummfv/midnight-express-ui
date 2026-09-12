@@ -352,46 +352,53 @@ function CarriagePage() {
           </div>
 
           <div className="overflow-x-auto rounded-sm">
-            <div className="relative w-[190%] overflow-hidden rounded-sm border border-border/70 sm:w-full">
-              {/* Layer 1 — the carriage itself */}
+            <div
+              className="relative w-[190%] overflow-hidden rounded-sm border border-border/70 sm:w-full"
+              style={{ aspectRatio: `${1920} / ${Math.round(1088 * CROP)}` }}
+            >
+              {/* Layer 1 — the carriage itself (undercarriage cropped away) */}
               <img
                 src={interior}
                 alt="Nội thất toa tàu cổ với giường, bếp lò, bàn viết và kho đồ dưới ánh nến"
                 width={1920}
                 height={1088}
-                className="block h-auto w-full"
+                className="absolute top-0 left-0 block h-auto w-full"
               />
 
-              {/* Layer 2 — scenery moving past the window */}
-              <div
-                className="pointer-events-none absolute overflow-hidden rounded-[2px]"
-                style={{
-                  left: `${WINDOW.x}%`,
-                  top: `${WINDOW.y}%`,
-                  width: `${WINDOW.w}%`,
-                  height: `${WINDOW.h}%`,
-                  boxShadow: "inset 0 0 18px oklch(0.1 0.02 250 / 0.75)",
-                }}
-                aria-hidden="true"
-              >
-                <img
-                  src={time.scenery}
-                  alt=""
-                  loading="lazy"
-                  width={1920}
-                  height={640}
-                  className="animate-drift h-full w-[320%] max-w-none object-cover opacity-90"
-                  style={{ animationDuration: "16s" }}
 
-                />
-                <span
-                  className="absolute inset-0"
+              {/* Layer 2 — scenery moving past the windows */}
+              {WINDOWS.map((w, i) => (
+                <div
+                  key={i}
+                  className="pointer-events-none absolute overflow-hidden rounded-[2px]"
                   style={{
-                    background:
-                      "linear-gradient(120deg, oklch(1 0 0 / 0.16), transparent 45%)",
+                    left: `${w.x}%`,
+                    top: `${w.y}%`,
+                    width: `${w.w}%`,
+                    height: `${w.h}%`,
+                    boxShadow: "inset 0 0 18px oklch(0.1 0.02 250 / 0.75)",
                   }}
-                />
-              </div>
+                  aria-hidden="true"
+                >
+                  <img
+                    src={time.scenery}
+                    alt=""
+                    loading="lazy"
+                    width={1920}
+                    height={640}
+                    className="animate-drift h-full w-[320%] max-w-none object-cover opacity-90"
+                    style={{ animationDuration: "16s", animationDelay: `${i * -4}s` }}
+                  />
+                  <span
+                    className="absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(120deg, oklch(1 0 0 / 0.16), transparent 45%)",
+                    }}
+                  />
+                </div>
+              ))}
+
 
 
               {/* Layer 3 — time-of-day light */}
@@ -401,18 +408,22 @@ function CarriagePage() {
                 aria-hidden="true"
               />
               {/* window light spilling in */}
-              <div
-                className="pointer-events-none absolute animate-flicker"
-                style={{
-                  left: `${WINDOW.x - 6}%`,
-                  top: `${WINDOW.y - 4}%`,
-                  width: `${WINDOW.w + 14}%`,
-                  height: `${WINDOW.h + 26}%`,
-                  background: `radial-gradient(50% 50% at 45% 40%, ${time.glow}, transparent 72%)`,
-                  mixBlendMode: "screen",
-                }}
-                aria-hidden="true"
-              />
+              {WINDOWS.map((w, i) => (
+                <div
+                  key={i}
+                  className="animate-flicker pointer-events-none absolute"
+                  style={{
+                    left: `${w.x - 6}%`,
+                    top: `${w.y - 4}%`,
+                    width: `${w.w + 14}%`,
+                    height: `${w.h + 30}%`,
+                    background: `radial-gradient(50% 50% at 45% 40%, ${time.glow}, transparent 72%)`,
+                    mixBlendMode: "screen",
+                  }}
+                  aria-hidden="true"
+                />
+              ))}
+
               <div
                 className="pointer-events-none absolute inset-0"
                 style={{
@@ -447,8 +458,9 @@ function CarriagePage() {
                     />
                     <span
                       className={`panel-parchment pointer-events-none absolute bottom-1 left-1/2 max-w-[95%] -translate-x-1/2 truncate rounded-sm px-1.5 py-0.5 text-[0.65rem] transition-all duration-200 group-hover:opacity-100 group-focus-visible:opacity-100 sm:text-xs ${
-                        on ? "opacity-100" : "opacity-0 max-md:opacity-85"
+                        on ? "opacity-100" : "opacity-0"
                       }`}
+
 
                     >
                       {h.label}
